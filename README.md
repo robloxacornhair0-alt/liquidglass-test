@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://www.wikipedia.org/wiki/Liquid_Glass">
-    <img src="svgbutton.svg" alt="Liquid Glass" width="280">
+  <a href="https://robloxacornhair0-alt.github.io/liquidglass-test/">
+    <img src="svgbutton.svg" alt="Liquid Glass Website" width="280">
   </a>
 </p>
 
@@ -11,4 +11,4 @@
 > Don't steal index.html and style.css for test without credits.
 
 > [!CAUTION]
-> Don't edit index.html and style.css badly or the website will crash.
+> Don't edit index.html and style.css badly while become forked user or the website will crash.
