@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquid Glass</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- SVG filter: subtle refraction displacement — the iOS 26 "liquid" warp -->
+    <svg style="display:none" aria-hidden="true">
+        <defs>
+            <filter id="glass-distort" x="-10%" y="-10%" width="120%" height="120%"
+                    color-interpolation-filters="sRGB">
+                <feTurbulence type="fractalNoise" baseFrequency="0.018 0.012"
+                              numOctaves="3" seed="9" result="noise"/>
+                <feDisplacementMap in="SourceGraphic" in2="noise"
+                                   scale="10" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- Vivid background blobs -->
+    <div class="liquid-bg" id="liquidBg">
+        <div class="blob b1"></div>
+        <div class="blob b2"></div>
+        <div class="blob b3"></div>
+        <div class="blob b4"></div>
+    </div>
+
+    <!-- Refraction layer: sits exactly behind the card, warps background through SVG filter -->
+    <div class="glass-refract"></div>
+
+    <!-- The card -->
+    <div class="glass-card">
+        <!-- Inner dome highlight element -->
+        <div class="glass-dome"></div>
+
+        <h2>Liquid Glass</h2>
+        <p>This card uses CSS backdrop-filter to create a frosted glass effect over fluid, morphing background shapes.</p>
+
+        <label for="bg-upload" class="bg-btn" id="magBtn">Background</label>
+        <input type="file" id="bg-upload" accept="image/*">
+    </div>
+
+    <script>
+        /* ── Background upload ── */
+        const bgUpload  = document.getElementById('bg-upload');
+        const liquidBg  = document.getElementById('liquidBg');
+        const refract   = document.querySelector('.glass-refract');
+
+        bgUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                document.body.style.backgroundImage = `url('${url}')`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                liquidBg.style.display = 'none';
+            }
+        });
+
+        /* ── Keep refract layer aligned to card ── */
+        const card = document.querySelector('.glass-card');
+
+        function syncRefract() {
+            const r = card.getBoundingClientRect();
+            refract.style.left   = r.left + 'px';
+            refract.style.top    = r.top  + 'px';
+            refract.style.width  = r.width  + 'px';
+            refract.style.height = r.height + 'px';
+        }
+        syncRefract();
+        window.addEventListener('resize', syncRefract);
+
+        /* ── Magnetic button — lerp speed 0.08 ── */
+        const btn = document.getElementById('magBtn');
+        let curX = 0, curY = 0, targetX = 0, targetY = 0;
+        let rafId = null, isHovered = false;
+        const SPEED = 0.08;
+        const PULL  = 0.38;
+
+        btn.addEventListener('mouseenter', () => {
+            isHovered = true;
+            if (!rafId) rafId = requestAnimationFrame(tick);
+        });
+
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            targetX = (e.clientX - (rect.left + rect.width  / 2)) * PULL;
+            targetY = (e.clientY - (rect.top  + rect.height / 2)) * PULL;
+        });
+
+        btn.addEventListener('mouseleave', () => {
+            isHovered = false;
+            targetX = 0;
+            targetY = 0;
+        });
+
+        function tick() {
+            curX += (targetX - curX) * SPEED;
+            curY += (targetY - curY) * SPEED;
+            btn.style.transform = `translate(${curX}px, ${curY}px)`;
+
+            const dist = Math.abs(targetX - curX) + Math.abs(targetY - curY);
+            if (dist > 0.05 || isHovered) {
+                rafId = requestAnimationFrame(tick);
+            } else {
+                btn.style.transform = 'translate(0px,0px)';
+                rafId = null;
+            }
+        }
+    </script>
+</body>
+</html>
