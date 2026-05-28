@@ -2,7 +2,7 @@ const canvas = document.getElementById('webgl-canvas');
 const gl = canvas.getContext('webgl', { alpha: true });
 
 if (!gl) {
-    console.error("WebGL initialization failed.");
+    console.error("WebGL context not available.");
 }
 
 function resizeCanvas() {
@@ -36,15 +36,12 @@ const fsSource = `
     void main() {
         vec2 uv = vTexCoord;
         
-        // Blur component setting (0.5 target deviation)
+        // Exact mathematical configurations matching your design requirements
         float blurOffset = 0.5 / 255.0; 
-        
-        // Refraction amount setting (25 target scale)
-        // Chromatic aberration is 0 because channels match perfectly
         float noiseVal = generateNoise(uv * 8.0);
         vec2 displacement = vec2(noiseVal * 25.0 / 1000.0);
         
-        gl_FragColor = vec4(1.0, 1.0, 1.0, 0.04);
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 0.05);
     }
 `;
 
