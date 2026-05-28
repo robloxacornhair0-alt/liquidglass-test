@@ -1,361 +1,110 @@
-/* ── Fonts ── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
-
-@font-face {
-    font-family: 'SF Pro Display';
-    src: local('SF Pro Display'), local('.SFNSDisplay'), local('SFProDisplay-Regular');
-    font-weight: 400;
-}
-@font-face {
-    font-family: 'SF Pro Display';
-    src: local('SF Pro Display Medium'), local('.SFNSDisplay-Medium'), local('SFProDisplay-Medium');
-    font-weight: 500;
-}
-
-/* ── iOS ease curves ── */
+/* ── Reset & Core Layout ── */
 :root {
-    --ease-ios:        cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --ease-ios-out:    cubic-bezier(0,    0,    0.2,  1);
-    --ease-ios-spring: cubic-bezier(0.34, 1.30, 0.64, 1);
-    --font: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    --ease-ios-spring: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* ── Reset ── */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-/* ── Base — iOS 26 uses near-white light background ── */
 body {
+    width: 100vw;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background: #f0f4ff;
+    background-color: #0d0c1d;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     overflow: hidden;
-    font-family: var(--font);
-    transition: background-image 0.6s var(--ease-ios-out);
+    perspective: 1000px;
 }
 
-/* ── Vivid blobs — iOS 26 uses jewel-tone saturated colors ── */
+/* ── Vivid Fluid Background ── */
 .liquid-bg {
-    position: fixed;
+    position: absolute;
     inset: 0;
-    z-index: 0;
+    z-index: 1;
+    filter: blur(40px);
+    background: #0d0c1d;
 }
 
 .blob {
     position: absolute;
     border-radius: 50%;
-    opacity: 0;
-    animation: blob-enter 1.4s var(--ease-ios-out) forwards;
+    mix-blend-mode: screen;
+    opacity: 0.65;
+    animation: float-around 20s infinite alternate ease-in-out;
 }
 
-/* Individual blob drift — each unique so they feel organic */
 .b1 {
-    width: 600px; height: 600px;
-    background: radial-gradient(circle at 40% 40%, #bf5fff, #5b8fff);
-    filter: blur(90px);
-    top: -180px; left: -120px;
-    animation-duration: 1.4s, 18s;
-    animation-name: blob-enter, drift-1;
-    animation-delay: 0s, 1.4s;
-    animation-fill-mode: forwards, none;
-    animation-iteration-count: 1, infinite;
-    animation-direction: normal, alternate;
-    animation-timing-function: var(--ease-ios-out), var(--ease-ios);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #ff007f 0%, transparent 70%);
+    top: -10%;
+    left: -10%;
+    animation-duration: 25s;
 }
+
 .b2 {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle at 60% 50%, #ff3cac, #ff9800);
-    filter: blur(80px);
-    bottom: -120px; right: -100px;
-    animation-duration: 1.4s, 14s;
-    animation-name: blob-enter, drift-2;
-    animation-delay: 0.1s, 1.5s;
-    animation-fill-mode: forwards, none;
-    animation-iteration-count: 1, infinite;
-    animation-direction: normal, alternate-reverse;
-    animation-timing-function: var(--ease-ios-out), var(--ease-ios);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, #00f0ff 0%, transparent 70%);
+    bottom: -20%;
+    right: -10%;
+    animation-duration: 30s;
 }
+
 .b3 {
-    width: 380px; height: 380px;
-    background: radial-gradient(circle at 50% 60%, #00e5ff, #00c853);
-    filter: blur(70px);
-    bottom: 60px; left: 40px;
-    animation-duration: 1.4s, 20s;
-    animation-name: blob-enter, drift-3;
-    animation-delay: 0.2s, 1.6s;
-    animation-fill-mode: forwards, none;
-    animation-iteration-count: 1, infinite;
-    animation-direction: normal, alternate;
-    animation-timing-function: var(--ease-ios-out), var(--ease-ios);
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, #7000ff 0%, transparent 70%);
+    top: 30%;
+    left: 40%;
+    animation-duration: 22s;
 }
+
 .b4 {
-    width: 280px; height: 280px;
-    background: radial-gradient(circle, #ffe259, #ff6b6b);
-    filter: blur(60px);
-    top: 40px; right: 80px;
-    animation-duration: 1.4s, 16s;
-    animation-name: blob-enter, drift-4;
-    animation-delay: 0.3s, 1.7s;
-    animation-fill-mode: forwards, none;
-    animation-iteration-count: 1, infinite;
-    animation-direction: normal, alternate-reverse;
-    animation-timing-function: var(--ease-ios-out), var(--ease-ios);
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, #ffaa00 0%, transparent 70%);
+    bottom: 20%;
+    left: 10%;
+    animation-duration: 18s;
 }
 
-@keyframes blob-enter {
-    from { opacity: 0; transform: scale(0.8); }
-    to   { opacity: 0.82; transform: scale(1); }
-}
-@keyframes drift-1 {
-    0%   { transform: translate(0,0) scale(1); }
-    50%  { transform: translate(40px, -30px) scale(1.06); }
-    100% { transform: translate(-25px, 20px) scale(0.96); }
-}
-@keyframes drift-2 {
-    0%   { transform: translate(0,0) scale(1); }
-    50%  { transform: translate(-30px, 20px) scale(1.04); }
-    100% { transform: translate(20px, -35px) scale(0.98); }
-}
-@keyframes drift-3 {
-    0%   { transform: translate(0,0) scale(1); }
-    50%  { transform: translate(20px, 30px) scale(1.08); }
-    100% { transform: translate(-15px, -20px) scale(0.94); }
-}
-@keyframes drift-4 {
-    0%   { transform: translate(0,0) scale(1); }
-    50%  { transform: translate(-20px, -15px) scale(1.05); }
-    100% { transform: translate(25px, 20px) scale(0.97); }
+@keyframes float-around {
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    50% { transform: translate(80px, 60px) scale(1.1) rotate(180deg); }
+    100% { transform: translate(-40px, -80px) scale(0.9) rotate(360deg); }
 }
 
-/* ── Refraction warp layer ── */
-/* Sits behind card, same size, applies SVG displacement to whatever is behind it */
-.glass-refract {
-    position: fixed;
-    z-index: 1;
-    border-radius: 36px;
-    pointer-events: none;
-
-    /* The SVG filter warps the pixel content behind this layer */
-    filter: url(#glass-distort);
-
-    /* A very slight blur pre-warp to soften hard blob edges */
-    backdrop-filter: blur(2px) saturate(140%);
-    -webkit-backdrop-filter: blur(2px) saturate(140%);
-
-    opacity: 0;
-    animation: fade-in 0.5s var(--ease-ios-out) 0.6s forwards;
-}
-@keyframes fade-in {
-    to { opacity: 1; }
-}
-
-/* ── iOS 26 Liquid Glass card ──
-   Layer stack (back → front):
-   1. .glass-refract   — SVG displacement warp
-   2. card bg          — frosted glass (backdrop-filter)
-   3. ::before         — convex dome specular highlight
-   4. ::after          — bottom rim reflection
-   5. .glass-dome      — inner luminous glow ring
-   6. content
-── */
+/* ── Liquid Glass Card Element ── */
 .glass-card {
     position: relative;
-    z-index: 2;
-    width: 400px;
-    padding: 48px 44px 44px;
-    border-radius: 36px;
+    z-index: 10;
+    width: 380px;
+    height: 500px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     text-align: center;
-    isolation: isolate;
-
-    /* Core glass — high saturation so background colors bleed through vividly */
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(50px) saturate(220%) brightness(1.12);
-    -webkit-backdrop-filter: blur(50px) saturate(220%) brightness(1.12);
-
-    /* iOS 26: thick, bright rim — top and left are bright (light source),
-       bottom and right are softer (shadow side of the glass edge) */
-    border-top:    1.5px solid rgba(255, 255, 255, 0.95);
-    border-left:   1.5px solid rgba(255, 255, 255, 0.70);
-    border-right:  1.5px solid rgba(255, 255, 255, 0.25);
-    border-bottom: 1.5px solid rgba(255, 255, 255, 0.20);
-
-    box-shadow:
-        /* Outer soft depth */
-        0 50px 100px rgba(80,  60, 180, 0.22),
-        0 12px  30px rgba(0,   0,   0, 0.10),
-        /* Thin outer rim glow */
-        0  0    0  0.5px rgba(255, 255, 255, 0.60),
-        /* Inner top specular — the bright white lip of real glass */
-        inset 0  2.5px 0   rgba(255, 255, 255, 1.00),
-        /* Inner side rim */
-        inset 2px 0    0   rgba(255, 255, 255, 0.60),
-        /* Inner bottom — subtle reflected light from below */
-        inset 0 -1.5px 0   rgba(255, 255, 255, 0.30),
-        /* Ambient inner luminosity */
-        inset 0  0    60px rgba(255, 255, 255, 0.06);
-
-    animation: card-enter 0.75s var(--ease-ios-spring) 0.25s both;
-}
-
-@keyframes card-enter {
-    from { opacity: 0; transform: translateY(32px) scale(0.93); }
-    to   { opacity: 1; transform: translateY(0)    scale(1); }
-}
-
-/* Convex dome specular — the defining iOS 26 trait.
-   Simulates a bright curved highlight from overhead light
-   hitting a thick convex glass surface. */
-.glass-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    z-index: -1;
-
-    background:
-        /* Dome peak — bright white oval at top-center */
-        radial-gradient(
-            ellipse 72% 42% at 50% -2%,
-            rgba(255, 255, 255, 0.72) 0%,
-            rgba(255, 255, 255, 0.18) 45%,
-            transparent 100%
-        ),
-        /* Left catch-light — secondary specular from side */
-        radial-gradient(
-            ellipse 30% 60% at -2% 35%,
-            rgba(255, 255, 255, 0.35) 0%,
-            transparent 100%
-        );
-}
-
-/* Bottom rim reflection — light bouncing up from below the glass */
-.glass-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    z-index: -1;
-
-    background:
-        radial-gradient(
-            ellipse 55% 18% at 50% 102%,
-            rgba(255, 255, 255, 0.28) 0%,
-            transparent 100%
-        );
-}
-
-/* Inner luminous ring — the "glow from within" iOS 26 has */
-.glass-dome {
-    position: absolute;
-    inset: 8px;
-    border-radius: 30px;
-    pointer-events: none;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: radial-gradient(
-        ellipse 80% 50% at 50% 0%,
-        rgba(255, 255, 255, 0.10) 0%,
-        transparent 70%
-    );
-}
-
-/* ── Typography ── */
-
-.glass-card h2 {
-    font-family: var(--font);
-    font-weight: 500;
-    font-size: 1.85rem;
-    letter-spacing: 0.01em;
-    color: rgba(10, 5, 40, 0.88);
-    margin-bottom: 14px;
-
-    opacity: 0;
-    animation: text-enter 0.5s var(--ease-ios-out) 0.60s forwards;
-}
-
-.glass-card p {
-    font-family: var(--font);
-    font-weight: 400;
-    font-size: 0.95rem;
-    line-height: 1.65;
-    color: rgba(20, 10, 60, 0.52);
-    margin-bottom: 34px;
-
-    opacity: 0;
-    animation: text-enter 0.5s var(--ease-ios-out) 0.75s forwards;
-}
-
-@keyframes text-enter {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── File input ── */
-#bg-upload { display: none; }
-
-/* ── iOS 26 pill button — its own glass layer ── */
-.bg-btn {
-    display: inline-block;
-    padding: 14px 32px;
-    border-radius: 999px;
-    cursor: pointer;
-    font-family: var(--font);
-    font-size: 0.92rem;
-    font-weight: 500;
-    letter-spacing: 0.015em;
-    color: rgba(15, 8, 55, 0.85);
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-
-    background: rgba(255, 255, 255, 0.30);
-    backdrop-filter: blur(30px) saturate(200%) brightness(1.10);
-    -webkit-backdrop-filter: blur(30px) saturate(200%) brightness(1.10);
-
-    border-top:    1px solid rgba(255, 255, 255, 0.90);
-    border-left:   1px solid rgba(255, 255, 255, 0.65);
-    border-right:  1px solid rgba(255, 255, 255, 0.20);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-
-    box-shadow:
-        0 4px 20px rgba(100, 80, 200, 0.14),
-        inset 0  2px 0 rgba(255, 255, 255, 0.95),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.25);
-
-    transition:
-        box-shadow  0.22s var(--ease-ios-spring),
-        background  0.22s var(--ease-ios-out);
-
-    opacity: 0;
-    animation: text-enter 0.5s var(--ease-ios-out) 0.90s forwards;
-}
-
-/* Dome specular on button */
-.bg-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(
-        ellipse 80% 50% at 50% -5%,
-        rgba(255, 255, 255, 0.60) 0%,
-        transparent 100%
-    );
-    pointer-events: none;
-}
-
-.bg-btn:hover {
-    background: rgba(255, 255, 255, 0.48);
-    box-shadow:
-        0 8px 32px rgba(100, 80, 200, 0.20),
-        inset 0  2px 0 rgba(255, 255, 255, 1.00),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.30);
-}
-
-.bg-btn:active {
-    transform: scale(0.95) !important;
-    transition-duration: 0.08s;
-}
+    
+    /* Core Glass Layer Style */
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 36px;
+    
+    /* Applies your exact 0.5 blur, 25 refraction, 0 chromatic aberration filter directly */
+    filter: url(#glass-distort);
+    backdrop-filter: blur(20px);
+    
+    /* Structural Shadow Depth & Realism Borders */
+    box-shadow: 
+        0 50px 100px rgba(80, 60, 180, 0.22), 
+        0 12px 30px rgba(0, 0, 0, 0.10), 
+        0 0 0 0.5px rgba(255, 255, 255, 0.40), 
+        inset 0 2.5px 0 rgba(255, 255, 255, 0.50), 
+        inset 2px 0 0 rgba(255, 255, 255,
