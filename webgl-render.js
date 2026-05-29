@@ -41,9 +41,8 @@ const fsSource = `
         float noiseVal = generateNoise(uv * 8.0);
         vec2 displacement = vec2(noiseVal * 25.0 / 1000.0);
         
-        gl_FragColor = vec4(1.0, 1.0, 1.0, 0.05);
-    }
-`;
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+    }0.05
 
 function createShader(gl, type, source) {
     const shader = gl.createShader(type);
